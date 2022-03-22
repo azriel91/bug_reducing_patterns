@@ -4,3 +4,6 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Bug Reducing Patterns"
+
+[preprocessor.graphviz]
+command = "mdbook-graphviz"
