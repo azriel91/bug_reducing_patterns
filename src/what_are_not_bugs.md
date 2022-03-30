@@ -5,14 +5,17 @@
     User input does not match the software enforced constraints.
 
     - It is not a bug to return an error.
-    - It is a bug not to return an error.
-    - How good the error is is a different thing.
+    - It is usually a bug not to return an error.
+    - How good the error is, is a different topic.
 
 2. Error returned because the input is out of the capability of the software.
 
     1. I have 2 billion dollars. <span class="comment">            # not a bug</span>
     2. My friend gives me 1 billion dollars. <span class="comment">  # not a bug</span>
-    3. Now I have negative 1 billion dollars. <span class="comment"> # a bug</span>
+    3. Outcome
+
+        - Now I have negative 1 billion dollars. <span class="comment"> # bad</span>
+        - Software errs that it is out of bounds. <span class="comment"> # good</span>
 
     > ⚠️ To receive input is not a bug. To not reject it when you can't handle it, is.
 

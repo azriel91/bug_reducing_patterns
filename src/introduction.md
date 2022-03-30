@@ -1,6 +1,6 @@
 # Introduction
 
-> Making a mistake once is human. Distributing mistake to thousands of users is software.
+> **Bug:** The difference between what should be and what is.
 
 This book describes different ways bugs happen in code, and patterns to reduce their occurrences.
 

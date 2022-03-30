@@ -41,7 +41,7 @@ digraph {
 
 Correct &ndash; if **A** is software.
 
-But ☝️! if **A** means people, you'd be insulting the entire class of users.
+But ☝️! if **A** means people, you are insulting the entire class of users.
 
 </details>
 
