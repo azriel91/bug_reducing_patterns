@@ -23,6 +23,7 @@ Seven kinds / classifications of bugs.
     - `null` can mean "it's not there", or "it's there, but it's empty."
     - Provider expects consumer to opt-in, consumer expected opt-out.
     - Provider expects consumer to opt-out, consumer expected opt-in.
+    - Type is able to hold values outside the range of valid business values, so consumer may assume whatever fits is okay.
 
 4. Detached Parameters Incorrect.
 

@@ -14,3 +14,4 @@
 - [Patterns](./patterns.md)
     - [Strong Types](./patterns/strong_types.md)
     - [Option Types](./patterns/option_types.md)
+    - [Parse, Don't Validate](./patterns/parse_dont_validate.md)
