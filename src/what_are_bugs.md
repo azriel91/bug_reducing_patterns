@@ -4,55 +4,50 @@
 
 Seven kinds / classifications of bugs.
 
-1. Consumer got the input wrong.
+1. Consumer Input Incorrect.
 
     Input value doesn't comply with allowed specification.
 
-    - Incorrect syntax.
+    - Syntax incorrect.
     - Values out of allowed range.
 
-2. Provider got the output wrong.
+2. Provider Output Incorrect.
 
     Output value doesn't comply with output specification.
 
-    - Incorrect syntax.
-    - Miscalculation.
+    - Syntax incorrect.
+    - Logic incorrect.
 
-3. Consumer and provider expectations not aligned.
-
-    Misinterpretation / ambiguous meaning of input / output / side effects.
+3. Ambiguity / Misaligned Expectations.
 
     - `null` can mean "it's not there", or "it's there, but it's empty."
     - Provider expects consumer to opt-in, consumer expected opt-out.
     - Provider expects consumer to opt-out, consumer expected opt-in.
 
-4. Provider contains state that can differ, but consumer is not aware.
+4. Detached Parameters Incorrect.
 
-    For the same input from the consumer, provider returns different output due to calculation using internal state.
+    For the same input from the consumer, provider returns different output due to calculation using other state.
 
     - Environmental variables
     - Configuration
-    - Time
-    - Load (physical limits)
 
-5. Provider does things in the wrong way. e.g. log sensitive information.
+    The bug may be outside of the source code. Configuration is deferred code.
 
-    Unintended / undesired side effects.
+5. Undesired Side Effects.
+
+    Provider leaks information in the logs.
 
     <!--   There are ways to restrict this at compile time, e.g. must implement loggable interface.   -->
 
-6. Provider does not enforce restrictions on input.
+6. Input Restrictions Too Loose.
 
-    Unintentionally doing more things than one should.
-
-    - Remote code execution: Log4Shell.
-    - Data leakage: Heartbleed.
+    Provider unintentionally does more than it should. e.g. Remote code execution: Log4Shell.
 
     Sometimes what sounds like a good idea at the time, may not be a good idea later on.
 
-7. Undefined behaviour.
+7. Undefined Behaviour.
 
-    Software executes logic over invalid data.
+    Software executes logic over invalid values.
 
     - Didn't code for a particular case because didn't realize it is possible.
     - Two data items which are valid independently are invalid together.
