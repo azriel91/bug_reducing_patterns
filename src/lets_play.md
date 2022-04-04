@@ -7,7 +7,7 @@
 * **B** takes that invalid input, and passes it to **C**.
 * **C** doesn't like the input and drops it.
 
-```dot process lets_play_where_is_the_bug
+```dot process
 digraph {
     rankdir = LR;
 

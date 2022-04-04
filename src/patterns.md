@@ -2,15 +2,13 @@
 
 Largely designed for statically typed languages. These patterns are designed or intended to:
 
-* Favour compile errors over testing.
+* Favour compile errors over testing through type safety.
 
-    Make it impossible to do the wrong thing, so quality is maintained even without tests.
-
-* Favour type safety over validation.
-
-    Have compile time guarantees that any invalid data bug needs to only be fixed once.
+    By making it impossible to compile incorrect code, quality is maintained with less tests.
 
 * Reduce mental effort to understand the concept the code is fulfilling.
+
+    Make it easier to understand what the code is doing, to make it easier to spot bugs.
 
 
 ## Disclaimer

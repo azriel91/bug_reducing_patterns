@@ -104,5 +104,4 @@ We communicate across the API boundary that the value may not exist.
 ## Bug Variants Addressed
 
 * **1, 7:** Use `Optional` to indicate when it is valid to not provide a value.
-* **2, 7:** Use `Optional` in return types to indicate there may not be a return value.
-
+* **3:** Use `Optional` in return types to indicate there may not be a return value.
