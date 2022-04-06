@@ -12,14 +12,3 @@ These patterns are designed or intended to:
 * Favour compile time errors over runtime errors.
 
     By making it impossible to compile incorrect code, correctness and quality is maintained, with fewer tests.
-
-
-## Disclaimer
-
-As with most patterns, pragmaticism applies.
-
-Applying the concepts excessively may:
-
-* Negatively affect compile time or runtime performance depending on your language.
-* Increase the number of files needed to be maintained.
-* Cause debate between colleagues, depending on each persons bias.

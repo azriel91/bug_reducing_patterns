@@ -18,6 +18,8 @@
     - [Option Type](./patterns/option_type.md)
     - [Either Type](./patterns/either_type.md)
 <!-- - [What Are Not Bugs](./what_are_not_bugs.md) -->
+- [Application](./application.md)
+- [Conclusion](./conclusion.md)
 - [Questions and Comments](./questions_and_comments.md)
 
 ---
