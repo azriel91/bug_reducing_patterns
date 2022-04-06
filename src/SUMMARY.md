@@ -10,6 +10,7 @@
     - [Undesired Side Effects](./what_are_bugs/undesired_side_effects.md)
     - [Input Restrictions Too Loose](./what_are_bugs/input_restrictions_too_loose.md)
 <!--     - [Misaligned Expectations](./what_are_bugs/misaligned_expectations.md) -->
+- [Causes of Bugs](./causes_of_bugs.md)
 - [Patterns](./patterns.md)
     - [Strong Types](./patterns/strong_types.md)
     - [Parse, Don't Validate](./patterns/parse_dont_validate.md)
