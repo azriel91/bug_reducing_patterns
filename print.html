@@ -1,0 +1,809 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Bug Reducing Patterns</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lets_play.html"><strong aria-hidden="true">2.</strong> Let's Play</a></li><li class="chapter-item expanded "><a href="what_are_bugs.html"><strong aria-hidden="true">3.</strong> What Are Bugs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="what_are_bugs/consumer_input_incorrect.html"><strong aria-hidden="true">3.1.</strong> Consumer Input Incorrect</a></li><li class="chapter-item expanded "><a href="what_are_bugs/provider_output_incorrect.html"><strong aria-hidden="true">3.2.</strong> Provider Output Incorrect</a></li><li class="chapter-item expanded "><a href="what_are_bugs/semantic_ambiguity.html"><strong aria-hidden="true">3.3.</strong> Semantic Ambiguity</a></li><li class="chapter-item expanded "><a href="what_are_bugs/detached_parameters_incorrect.html"><strong aria-hidden="true">3.4.</strong> Detached Parameters Incorrect</a></li><li class="chapter-item expanded "><a href="what_are_bugs/undesired_side_effects.html"><strong aria-hidden="true">3.5.</strong> Undesired Side Effects</a></li><li class="chapter-item expanded "><a href="what_are_bugs/input_restrictions_too_loose.html"><strong aria-hidden="true">3.6.</strong> Input Restrictions Too Loose</a></li></ol></li><li class="chapter-item expanded "><a href="causes_of_bugs.html"><strong aria-hidden="true">4.</strong> Causes of Bugs</a></li><li class="chapter-item expanded "><a href="patterns.html"><strong aria-hidden="true">5.</strong> Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="patterns/strong_types.html"><strong aria-hidden="true">5.1.</strong> Strong Types</a></li><li class="chapter-item expanded "><a href="patterns/parse_dont_validate.html"><strong aria-hidden="true">5.2.</strong> Parse, Don't Validate</a></li><li class="chapter-item expanded "><a href="patterns/builder.html"><strong aria-hidden="true">5.3.</strong> Builder</a></li><li class="chapter-item expanded "><a href="patterns/option_type.html"><strong aria-hidden="true">5.4.</strong> Option Type</a></li><li class="chapter-item expanded "><a href="patterns/either_type.html"><strong aria-hidden="true">5.5.</strong> Either Type</a></li></ol></li><li class="chapter-item expanded "><a href="questions_and_comments.html"><strong aria-hidden="true">6.</strong> Questions and Comments</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="thanks.html">Thanks</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Bug Reducing Patterns</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<blockquote>
+<p><strong>Bug:</strong> The difference between what should be and what is.</p>
+</blockquote>
+<p>This book describes different ways bugs happen in code, and patterns to reduce their occurrences.</p>
+<p>The patterns focus on reducing or removing the ability to write code that contains behaviour that one does not know exists.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lets-play"><a class="header" href="#lets-play">Let's Play</a></h1>
+<h2 id="-where-is-the-bug"><a class="header" href="#-where-is-the-bug">🐞 Where is the bug?</a></h2>
+<ul>
+<li><strong>A</strong>, <strong>B</strong>, and <strong>C</strong> are different entities.</li>
+<li><strong>A</strong> produces invalid input.</li>
+<li><strong>B</strong> takes that invalid input, and passes it to <strong>C</strong>.</li>
+<li><strong>C</strong> doesn't like the input and drops it.</li>
+</ul>
+<div><!-- Generated by graphviz version 2.43.0 (0)
+ --><!-- Title: %3 Pages: 1 --><svg width="182pt" height="42pt"
+ viewBox="0.00 0.00 181.82 41.94" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 37.94)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-37.94 177.82,-37.94 177.82,4 -4,4"/><!-- a --><g id="node1" class="node"><title>a</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="16.97" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="12.97" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">A</text></g><!-- b --><g id="node2" class="node"><title>b</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="86.91" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="82.91" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">B</text></g><!-- a&#45;&gt;b --><g id="edge1" class="edge"><title>a&#45;&gt;b</title><path fill="none" stroke="black" d="M34.07,-16.97C41.77,-16.97 51.18,-16.97 59.86,-16.97"/><polygon fill="black" stroke="black" points="59.93,-20.47 69.93,-16.97 59.93,-13.47 59.93,-20.47"/></g><!-- c --><g id="node3" class="node"><title>c</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="156.85" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="152.85" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">C</text></g><!-- b&#45;&gt;c --><g id="edge2" class="edge"><title>b&#45;&gt;c</title><path fill="none" stroke="black" d="M104.01,-16.97C111.71,-16.97 121.12,-16.97 129.81,-16.97"/><polygon fill="black" stroke="black" points="129.87,-20.47 139.87,-16.97 129.87,-13.47 129.87,-20.47"/></g></g></svg></div>
+<h2 id="perspectives"><a class="header" href="#perspectives">Perspectives</a></h2>
+<details>
+<summary>A</summary>
+<p>Correct – if <strong>A</strong> is software.</p>
+<p>But ☝️! if <strong>A</strong> means people, you are insulting the entire class of users.</p>
+</details>
+<details>
+<summary>B</summary>
+<p>Correct – if <strong>B</strong> should be a gatekeeper.</p>
+<p>But <strong>B</strong> could also just be a blind transport channel.</p>
+</details>
+<details>
+<summary>C</summary>
+<p>Correct – if <strong>C</strong> should communicate back that the value is invalid.</p>
+<p>But dropping invalid values could be completely okay.</p>
+</details>
+<details>
+<summary>There is no bug.</summary>
+<p>Correct – if unreliability is an acceptable design, like streaming a video.</p>
+</details>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="what-are-bugs"><a class="header" href="#what-are-bugs">What Are Bugs</a></h1>
+<blockquote>
+<p>&quot;Unexpected Behaviour&quot;</p>
+</blockquote>
+<p>Six kinds of bugs (not exhaustive – there's more!).</p>
+<ol>
+<li>Consumer Input Incorrect.</li>
+<li>Provider Output Incorrect.</li>
+<li>Semantic Ambiguity.</li>
+<li>Detached Parameters Incorrect.</li>
+<li>Undesired Side Effects.</li>
+<li>Input Restrictions Too Loose.</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="consumer-input-incorrect"><a class="header" href="#consumer-input-incorrect">Consumer Input Incorrect</a></h1>
+<p><img src="what_are_bugs/./consumer_input_incorrect.png" alt="" /></p>
+<p>Input value doesn't comply with allowed specification.</p>
+<ul>
+<li>Input format incorrect.</li>
+<li>Able to enter &quot;anything&quot;, so consumer assumes whatever fits is okay.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="provider-output-incorrect"><a class="header" href="#provider-output-incorrect">Provider Output Incorrect</a></h1>
+<p><img src="what_are_bugs/provider_output_incorrect.png" alt="" /></p>
+<p>Output value doesn't comply with output specification.</p>
+<ul>
+<li>Invalid values not rejected.</li>
+<li>Logic incorrect.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="semantic-ambiguity"><a class="header" href="#semantic-ambiguity">Semantic Ambiguity</a></h1>
+<p><img src="what_are_bugs/semantic_ambiguity.png" alt="" /></p>
+<ul>
+<li>
+<p>Sentinel values:</p>
+<ul>
+<li>Using <code>null</code> to mean &quot;it's not there&quot;, or &quot;it's there, but it's empty.&quot;</li>
+<li>Using <code>-1</code> to indicate something went wrong.</li>
+<li>Using <code>-1</code> to indicate a variable has not been given a proper value.</li>
+</ul>
+</li>
+<li>
+<p>Data type represents different concepts.</p>
+<ul>
+<li>If you want X, define fields <strong>A</strong>, <strong>B</strong>, and <strong>C</strong>.</li>
+<li>If you want Y, define fields <strong>A</strong>, <strong>B</strong>, <strong>D</strong>, and <strong>E</strong>.</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="detached-parameters-incorrect"><a class="header" href="#detached-parameters-incorrect">Detached Parameters Incorrect</a></h1>
+<div><!-- Generated by graphviz version 2.43.0 (0)
+ --><!-- Title: %3 Pages: 1 --><svg width="217pt" height="258pt"
+ viewBox="0.00 0.00 217.00 258.14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 254.14)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-254.14 213,-254.14 213,4 -4,4"/><!-- a --><g id="node1" class="node"><title>a</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="49" cy="-233.17" rx="16.94" ry="16.94"/><text text-anchor="start" x="45" y="-231.07" font-family="Monospace" font-weight="bold" font-size="12.00">A</text></g><!-- calculate --><g id="node4" class="node"><title>calculate</title><path fill="#eeeef5" stroke="#aaaabb" d="M88.33,-177.73C88.33,-177.73 9.67,-177.73 9.67,-177.73 4.83,-177.73 0,-172.89 0,-168.06 0,-168.06 0,-158.39 0,-158.39 0,-153.56 4.83,-148.73 9.67,-148.73 9.67,-148.73 88.33,-148.73 88.33,-148.73 93.17,-148.73 98,-153.56 98,-158.39 98,-158.39 98,-168.06 98,-168.06 98,-172.89 93.17,-177.73 88.33,-177.73"/><text text-anchor="start" x="8" y="-161.43" font-family="Monospace" font-weight="bold" font-size="11.00">calculate(a)</text></g><!-- a&#45;&gt;calculate --><g id="edge1" class="edge"><title>a&#45;&gt;calculate</title><path fill="none" stroke="black" d="M49,-216.07C49,-207.72 49,-197.36 49,-188.1"/><polygon fill="black" stroke="black" points="52.5,-187.92 49,-177.92 45.5,-187.92 52.5,-187.92"/></g><!-- b --><g id="node2" class="node"><title>b</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="133" cy="-163.23" rx="16.94" ry="16.94"/><text text-anchor="start" x="129" y="-161.13" font-family="Monospace" font-weight="bold" font-size="12.00">B</text></g><!-- calculate_inner --><g id="node5" class="node"><title>calculate_inner</title><path fill="#eeeef5" stroke="#aaaabb" d="M199.33,-110.25C199.33,-110.25 66.67,-110.25 66.67,-110.25 61.83,-110.25 57,-105.42 57,-100.59 57,-100.59 57,-90.92 57,-90.92 57,-86.09 61.83,-81.25 66.67,-81.25 66.67,-81.25 199.33,-81.25 199.33,-81.25 204.17,-81.25 209,-86.09 209,-90.92 209,-90.92 209,-100.59 209,-100.59 209,-105.42 204.17,-110.25 199.33,-110.25"/><text text-anchor="start" x="65" y="-93.95" font-family="Monospace" font-weight="bold" font-size="11.00">doCalculate(a, b, c)</text></g><!-- b&#45;&gt;calculate_inner --><g id="edge2" class="edge"><title>b&#45;&gt;calculate_inner</title><path fill="none" stroke="black" d="M133,-146.04C133,-138.37 133,-129.06 133,-120.61"/><polygon fill="black" stroke="black" points="136.5,-120.54 133,-110.54 129.5,-120.54 136.5,-120.54"/></g><!-- c --><g id="node3" class="node"><title>c</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="185" cy="-163.23" rx="16.94" ry="16.94"/><text text-anchor="start" x="181" y="-161.13" font-family="Monospace" font-weight="bold" font-size="12.00">C</text></g><!-- c&#45;&gt;calculate_inner --><g id="edge3" class="edge"><title>c&#45;&gt;calculate_inner</title><path fill="none" stroke="black" d="M174.73,-149.29C167.79,-140.56 158.46,-128.81 150.38,-118.64"/><polygon fill="black" stroke="black" points="152.93,-116.22 143.97,-110.57 147.45,-120.57 152.93,-116.22"/></g><!-- calculate&#45;&gt;calculate_inner --><g id="edge4" class="edge"><title>calculate&#45;&gt;calculate_inner</title><path fill="none" stroke="black" d="M66.4,-148.66C78.34,-139.35 94.38,-126.86 107.72,-116.46"/><polygon fill="black" stroke="black" points="109.88,-119.21 115.62,-110.3 105.58,-113.69 109.88,-119.21"/></g><!-- result --><g id="node6" class="node"><title>result</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="133" cy="-22.63" rx="22.76" ry="22.76"/><text text-anchor="start" x="125" y="-20.53" font-family="Monospace" font-weight="bold" font-size="12.00">..</text></g><!-- calculate_inner&#45;&gt;result --><g id="edge5" class="edge"><title>calculate_inner&#45;&gt;result</title><path fill="none" stroke="black" d="M133,-81.04C133,-73.79 133,-64.55 133,-55.62"/><polygon fill="black" stroke="black" points="136.5,-55.41 133,-45.42 129.5,-55.42 136.5,-55.41"/></g></g></svg></div>
+<p>For the same input from the consumer, provider returns different output due to calculation using other state.</p>
+<ul>
+<li>Environmental variables</li>
+<li>Configuration</li>
+</ul>
+<p>The bug may be outside of the source code. Configuration is deferred code.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="undesired-side-effects"><a class="header" href="#undesired-side-effects">Undesired Side Effects</a></h1>
+<p><img src="what_are_bugs/undesired_side_effects.png" alt="" /></p>
+<p>Provider leaks information:</p>
+<ul>
+<li>Sensitive information in application logs.</li>
+<li>Stack traces in responses.</li>
+</ul>
+<!--   There are ways to restrict this at compile time, e.g. must implement loggable interface.   -->
+<div style="break-before: page; page-break-before: always;"></div><h1 id="input-restrictions-too-loose"><a class="header" href="#input-restrictions-too-loose">Input Restrictions Too Loose</a></h1>
+<p><img src="what_are_bugs/input_restrictions_too_loose.png" alt="" /></p>
+<p>Provider unintentionally does more than it should.</p>
+<ul>
+<li>Remote code execution: Log4Shell</li>
+<li>Returns too much data: Heartbleed</li>
+</ul>
+<p>Sometimes what sounds like a good idea at the time, may not be a good idea later on.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="causes-of-bugs"><a class="header" href="#causes-of-bugs">Causes of Bugs</a></h1>
+<ol>
+<li>
+<p>Misunderstanding.</p>
+<ul>
+<li>Difficult to read code and grasp the concept.</li>
+<li>Not reading documentation.</li>
+<li>Reading documentation – documentation and code mismatch.</li>
+</ul>
+</li>
+<li>
+<p>Lack of awareness.</p>
+<ul>
+<li>Values are changed by &quot;some other code&quot;.</li>
+<li>Behaviour changes on upgrades.</li>
+<li>Operating with invalid values.</li>
+</ul>
+</li>
+<li>
+<p>Coding mistakes.</p>
+<ul>
+<li>Difficulty in expressing concept as code.</li>
+<li>Too many things to keep track of.</li>
+</ul>
+</li>
+<li>
+<p>Expectations change.</p>
+<ul>
+<li>What was desired previously is now undesired.</li>
+</ul>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="patterns"><a class="header" href="#patterns">Patterns</a></h1>
+<p>Largely designed for statically typed languages – they rely on having a compiler.</p>
+<p>These patterns are designed or intended to:</p>
+<ul>
+<li>
+<p>Communicate input and output expectations through API.</p>
+<p>Documentation is important, code is authoritative.</p>
+</li>
+<li>
+<p>Guarantee assumptions through type safety.</p>
+<p>By encoding proofs of correctness through types, one no longer has to write defensive code.</p>
+</li>
+<li>
+<p>Favour compile time errors over runtime errors through type safety.</p>
+<p>By making it impossible to compile incorrect code, correctness and quality is maintained with fewer tests.</p>
+</li>
+</ul>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>As with most patterns, pragmaticism applies.</p>
+<p>Applying the concepts excessively may:</p>
+<ul>
+<li>Negatively affect compile time or runtime performance depending on your language.</li>
+<li>Increase the number of files needed to be maintained.</li>
+<li>Cause debate between colleagues, depending on each persons bias.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="strong-types"><a class="header" href="#strong-types">Strong Types</a></h1>
+<blockquote>
+<p><em>In constrast to Stringly typed</em></p>
+</blockquote>
+<p>Instead of <code>String username, String password</code>, use <code>Username username, Password password</code>.</p>
+<p>Switch from:</p>
+<pre><code class="language-java">public class Profile {
+    private String username;
+    private String password;
+
+    public Profile(String username, String password) { .. }
+    // ..
+}
+</code></pre>
+<p>to:</p>
+<pre><code class="language-java">public class Profile {
+    private Username username;
+    private Password password;
+
+    public Profile(Username username, Password password) { .. }
+    // ..
+}
+
+public class Username {
+    private String value;
+    public boolean equals(..) { .. }
+    // ..
+}
+
+public class Password {
+    private String value;
+    public void toString() { return &quot;******&quot;; }
+    // ..
+}
+</code></pre>
+<h2 id="bug-variants-addressed"><a class="header" href="#bug-variants-addressed">Bug Variants Addressed</a></h2>
+<ul>
+<li><strong>1:</strong> Avoids argument swap by producing a compiler error.</li>
+<li><strong>5:</strong> <code>Password.toString()</code> never returns the true value, so a wrapping class that calls <code>toString()</code> on all of its member fields will not inadvertently log the password.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="parse-dont-validate"><a class="header" href="#parse-dont-validate">Parse, Don't Validate</a></h1>
+<div><!-- Generated by graphviz version 2.43.0 (0)
+ --><!-- Title: %3 Pages: 1 --><svg width="203pt" height="42pt"
+ viewBox="0.00 0.00 202.88 41.94" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 37.94)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-37.94 198.88,-37.94 198.88,4 -4,4"/><!-- a --><g id="node1" class="node"><title>a</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="16.97" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="12.97" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">A</text></g><!-- b --><g id="node2" class="node"><title>b</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="177.91" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="173.91" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">B</text></g><!-- a&#45;&gt;b --><g id="edge1" class="edge"><title>a&#45;&gt;b</title><path fill="none" stroke="black" d="M34.09,-16.97C61.45,-16.97 117.27,-16.97 150.45,-16.97"/><polygon fill="black" stroke="black" points="150.75,-20.47 160.75,-16.97 150.75,-13.47 150.75,-20.47"/><text text-anchor="start" x="51.94" y="-19.97" font-family="Monospace" font-size="10.00">parser.parse(a)</text></g></g></svg></div>
+<p>Once you validate raw input, turn it into another type as proof that it is validated. The type safety stops the possibility of invalid values propagating far into the code.</p>
+<div><!-- Generated by graphviz version 2.43.0 (0)
+ --><!-- Title: %3 Pages: 1 --><svg width="244pt" height="318pt"
+ viewBox="0.00 0.00 244.00 318.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 314)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-314 240,-314 240,4 -4,4"/><g id="clust1" class="cluster"><title>cluster_string</title><path fill="none" stroke="black" stroke-dasharray="5,2" d="M20,-8C20,-8 216,-8 216,-8 222,-8 228,-14 228,-20 228,-20 228,-290 228,-290 228,-296 222,-302 216,-302 216,-302 20,-302 20,-302 14,-302 8,-296 8,-290 8,-290 8,-20 8,-20 8,-14 14,-8 20,-8"/><text text-anchor="start" x="97.5" y="-290.2" font-family="Monospace" font-weight="bold" font-size="11.00">String</text></g><g id="clust2" class="cluster"><title>cluster_password</title><path fill="none" stroke="black" stroke-dasharray="5,2" d="M28,-57C28,-57 208,-57 208,-57 214,-57 220,-63 220,-69 220,-69 220,-143 220,-143 220,-149 214,-155 208,-155 208,-155 28,-155 28,-155 22,-155 16,-149 16,-143 16,-143 16,-69 16,-69 16,-63 22,-57 28,-57"/><text text-anchor="start" x="90.5" y="-143.2" font-family="Monospace" font-weight="bold" font-size="11.00">Password</text></g><!-- string_0 --><g id="node1" class="node"><title>string_0</title><text text-anchor="start" x="110" y="-264.4" font-family="Monospace" font-size="12.00">&quot;&quot;</text></g><!-- string_1 --><g id="node2" class="node"><title>string_1</title><text text-anchor="start" x="95" y="-215.4" font-family="Monospace" font-size="12.00">&quot;weak&quot;</text></g><!-- string_0&#45;&gt;string_1 --><!-- string_2 --><g id="node3" class="node"><title>string_2</title><text text-anchor="start" x="20.5" y="-166.4" font-family="Monospace" font-size="12.00">&quot;エイズリエル　と　申します‼️&quot;</text></g><!-- string_1&#45;&gt;string_2 --><!-- password_3 --><g id="node5" class="node"><title>password_3</title><text text-anchor="start" x="24" y="-117.4" font-family="Monospace" font-size="12.00">&quot;?Q9|HgU8_asio;&lt;1z%%A@v^&quot;</text></g><!-- string_2&#45;&gt;password_3 --><!-- string_n --><g id="node4" class="node"><title>string_n</title><text text-anchor="start" x="110" y="-19.4" font-family="Monospace" font-size="12.00">..</text></g><!-- password_4 --><g id="node6" class="node"><title>password_4</title><text text-anchor="start" x="24" y="-68.4" font-family="Monospace" font-size="12.00">&quot;vat*#2%!&amp;ExN4F+C$KB&#45;da3&quot;</text></g><!-- password_3&#45;&gt;password_4 --><!-- password_4&#45;&gt;string_n --></g></svg></div>
+<p><strong>Parser:</strong></p>
+<ul>
+<li>
+<p>Function that transforms an input type to a target type, iff it matches certain criteria.</p>
+</li>
+<li>
+<p>The target type's constructor must be restricted to the parser.</p>
+<p>Ensures the target type can never be constructed without going through the parser.</p>
+</li>
+<li>
+<p>Raise an error if the criteria is not met.</p>
+</li>
+</ul>
+<!-- *When* a bug is discovered may actually be far from where it entered. -->
+<details>
+<summary><b>Example:</b> Updating a password only if the proposed value is strong.</summary>
+<p>Switch from:</p>
+<pre><code class="language-java">// Usage
+void resetPassword(final String passwordProposed) throws PasswordTooWeakException {
+    passwordChecker.check(passwordProposed);
+
+    // password is strong
+
+    passwordUpdater.update(profile, passwordProposed);
+}
+
+public class Password {
+    private String value;
+    public Password(String value) { /* .. */ }
+    // ..
+}
+
+// our &quot;validator&quot;
+public class PasswordChecker {
+    public void check(String passwordProposed) throws PasswordTooWeakException {
+        if (isStrong(passwordProposed)) {
+            // ok!
+            return;
+        } else {
+            throw new PasswordTooWeakException(passwordProposed);
+        }
+    }
+}
+
+// our provider
+public class PasswordUpdater {
+    public void update(Profile profile, String newPassword) { /* .. */ }
+}
+</code></pre>
+<p>to:</p>
+<pre><code class="language-java">// Usage
+void resetPassword(final String passwordProposed) throws PasswordTooWeakException {
+    Password password = passwordChecker.check(passwordProposed);
+
+    passwordUpdater.update(profile, password);
+}
+
+public class Password {
+    private String value;
+
+    // package private visibility
+    Password(String value) { /* .. */ }
+    // ..
+}
+
+// our &quot;parser&quot;
+public class PasswordChecker {
+    public Password check(String passwordProposed) throws PasswordTooWeakException {
+        if (isStrong(passwordProposed)) {
+            return new Password(passwordProposed);
+        } else {
+            throw new PasswordTooWeakException(passwordProposed);
+        }
+    }
+}
+
+// our provider
+public class PasswordUpdater {
+    public void update(Profile profile, Password newPassword) { /* .. */ }
+}
+</code></pre>
+</details>
+<details>
+<summary><b>Example:</b> Only accepting a list of one-or-more elements.</summary>
+<p>Switch from:</p>
+<pre><code class="language-java">void displaySuggestions(final List&lt;Suggestion&gt; suggestions) {
+    // ..
+}
+</code></pre>
+<p>to:</p>
+<pre><code class="language-java">void displaySuggestions(final ListMinOneElement&lt;Suggestion&gt; suggestions) {
+    // ..
+}
+
+public &lt;T&gt; class ListMinOneElement&lt;T&gt; {
+    private List&lt;T&gt; inner;
+
+    private ListMinOneElement(List&lt;T&gt; inner) {
+        this.inner = inner;
+    }
+
+    public static ListMinOneElement&lt;T&gt; tryFrom(List&lt;T&gt; maybeEmptyList)
+            throws ListEmptyException {
+        if (maybeEmptyList.isEmpty()) {
+            throw new ListEmptyException(maybeEmptyList);
+        } else {
+            return new ListMinOneElement(maybeEmptyList);
+        }
+    }
+}
+</code></pre>
+</details>
+<h2 id="bug-variants-addressed-1"><a class="header" href="#bug-variants-addressed-1">Bug Variants Addressed</a></h2>
+<ul>
+<li>
+<p><strong>1:</strong> Raises an error<sup>1</sup> at the point of parsing.</p>
+</li>
+<li>
+<p><strong>2:</strong> Reduces provider code working with invalid input, because only valid input reaches the business logic.</p>
+</li>
+<li>
+<p><strong>3:</strong> Well-named restrictive types informs the consumer of constraints the input must adhere to, and parsing enforces the constraints.</p>
+</li>
+<li>
+<p><strong>6:</strong> Constrains input to a range of safe values.</p>
+<p>If we have a list of safe commands that input is parsed into, then we protect ourselves from running unsafe logic.</p>
+</li>
+</ul>
+<p><sup>1</sup> It is not a bug to raise an error.</p>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li><a href="https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/">Parse, don’t validate</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="builder"><a class="header" href="#builder">Builder</a></h1>
+<blockquote>
+<p>Never allow an object to be constructed unless it's correct.</p>
+</blockquote>
+<div><!-- Generated by graphviz version 2.43.0 (0)
+ --><!-- Title: %3 Pages: 1 --><svg width="474pt" height="199pt"
+ viewBox="0.00 0.00 473.97 198.88" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 194.88)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-194.88 469.97,-194.88 469.97,4 -4,4"/><!-- a --><g id="node1" class="node"><title>a</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="16.97" cy="-173.91" rx="16.94" ry="16.94"/><text text-anchor="start" x="12.97" y="-171.81" font-family="Monospace" font-weight="bold" font-size="12.00">A</text></g><!-- builder --><g id="node5" class="node"><title>builder</title><path fill="#eeeef5" stroke="#aaaabb" d="M203.8,-109.94C203.8,-109.94 154.14,-109.94 154.14,-109.94 149.3,-109.94 144.47,-105.11 144.47,-100.27 144.47,-100.27 144.47,-90.61 144.47,-90.61 144.47,-85.77 149.3,-80.94 154.14,-80.94 154.14,-80.94 203.8,-80.94 203.8,-80.94 208.64,-80.94 213.47,-85.77 213.47,-90.61 213.47,-90.61 213.47,-100.27 213.47,-100.27 213.47,-105.11 208.64,-109.94 203.8,-109.94"/><text text-anchor="middle" x="178.97" y="-92.34" font-family="Monospace" font-size="12.00">Builder</text></g><!-- a&#45;&gt;builder --><g id="edge1" class="edge"><title>a&#45;&gt;builder</title><path fill="none" stroke="black" d="M19.85,-156.96C22.44,-147.19 27.24,-135.2 35.97,-127.94 50.73,-115.66 97.88,-106.9 134.04,-101.79"/><polygon fill="black" stroke="black" points="134.95,-105.2 144.39,-100.38 134.01,-98.26 134.95,-105.2"/><text text-anchor="middle" x="105.47" y="-130.94" font-family="Monospace" font-size="10.00"> builder.with_a(a) &#160;&#160;&#160;&#160;</text></g><!-- b --><g id="node2" class="node"><title>b</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="178.97" cy="-173.91" rx="16.94" ry="16.94"/><text text-anchor="start" x="174.97" y="-171.81" font-family="Monospace" font-weight="bold" font-size="12.00">B</text></g><!-- b&#45;&gt;builder --><g id="edge2" class="edge"><title>b&#45;&gt;builder</title><path fill="none" stroke="black" d="M178.97,-156.69C178.97,-146.09 178.97,-132.05 178.97,-120.19"/><polygon fill="black" stroke="black" points="182.47,-120.08 178.97,-110.08 175.47,-120.08 182.47,-120.08"/><text text-anchor="middle" x="248.47" y="-130.94" font-family="Monospace" font-size="10.00"> builder.with_b(b) &#160;&#160;&#160;&#160;</text></g><!-- c --><g id="node3" class="node"><title>c</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="340.97" cy="-173.91" rx="16.94" ry="16.94"/><text text-anchor="start" x="336.97" y="-171.81" font-family="Monospace" font-weight="bold" font-size="12.00">C</text></g><!-- c&#45;&gt;builder --><g id="edge3" class="edge"><title>c&#45;&gt;builder</title><path fill="none" stroke="black" d="M337.11,-157.36C333.88,-147.5 328.25,-135.27 318.97,-127.94 292.04,-106.67 253.55,-99.17 223.75,-96.78"/><polygon fill="black" stroke="black" points="223.8,-93.27 213.6,-96.13 223.35,-100.26 223.8,-93.27"/><text text-anchor="middle" x="396.47" y="-130.94" font-family="Monospace" font-size="10.00"> builder.with_c(c) &#160;&#160;&#160;&#160;</text></g><!-- d --><g id="node4" class="node"><title>d</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="178.97" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="174.97" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">D</text></g><!-- builder&#45;&gt;d --><g id="edge4" class="edge"><title>builder&#45;&gt;d</title><path fill="none" stroke="black" d="M178.97,-80.77C178.97,-70.67 178.97,-56.6 178.97,-44.34"/><polygon fill="black" stroke="black" points="182.47,-44.18 178.97,-34.18 175.47,-44.18 182.47,-44.18"/><text text-anchor="middle" x="227.47" y="-54.94" font-family="Monospace" font-size="10.00"> builder.build()</text></g></g></svg></div>
+<p><strong>Builder:</strong></p>
+<ul>
+<li>Collects multiple values, then maps them into a single validated value in a <code>build()</code> method.</li>
+<li>Avoids partial objects – don't allow yourself to have an instance of the target type unless it is correct.</li>
+</ul>
+<p><strong>Example:</strong> Data where <code>intValue</code> must be greater than <code>byteValue</code>.</p>
+<p>Switch from:</p>
+<pre><code class="language-java">public class Data {
+    private final byte byteValue;
+    private final int intValue;
+    private final Optional&lt;String&gt; stringValue;
+
+    public Data(byte byteValue, int intValue, Optional&lt;String&gt; stringValue) {
+        this.byteValue = byteValue;
+        this.intValue = intValue;
+        this.stringValue = stringValue;
+    }
+
+    // ..
+}
+
+// Usage
+Data data = new Data(0, 1, Optional.empty());
+</code></pre>
+<p>to:</p>
+<pre><code class="language-java">public class Data {
+    private final byte byteValue;
+    private final int intValue;
+    private final Optional&lt;String&gt; stringValue;
+
+    // Package private to allow builder class access.
+    Data(byte byteValue, int intValue, Optional&lt;String&gt; stringValue) {
+        this.byteValue = byteValue;
+        this.intValue = intValue;
+        this.stringValue = stringValue;
+    }
+
+    // ..
+}
+
+public class DataBuilder {
+    private final Optional&lt;Byte&gt; byteValue;
+    private final Optional&lt;Integer&gt; intValue;
+    private final Optional&lt;String&gt; stringValue;
+
+    // Constructor
+    // either:
+
+    public DataBuilder() {
+        this.byteValue = Optional.empty();
+        this.integerValue = Optional.empty();
+        this.stringValue = Optional.empty();
+    }
+
+    // or
+
+    public DataBuilder(byte byteValue, int intValue) {
+        this.byteValue = Optional.of((Byte) byteValue);
+        this.integerValue = Optional.of((Integer) intValue);
+        this.stringValue = Optional.empty();
+    }
+
+    // Append additional values.
+
+    public DataBuilder withByteValue(byte byteValue) {
+        this.byteValue = Optional.of(byteValue);
+        return this;
+    }
+
+    public DataBuilder withIntValue(int intValue) {
+        this.intValue = Optional.of((Integer) intValue);
+        return this;
+    }
+
+    public DataBuilder withStringValue(String stringValue) {
+        this.stringValue = Optional.of(stringValue);
+        return this;
+    }
+
+    public Data build() throws IncompatibleValuesException {
+        // Default the byteValue and intValue
+        byte byteValue = this.byteValue
+                .orElse(0)
+                .byteValue();
+
+        int intValue = this.intValue
+                .orElse((int) byteValue + 1)
+                .intValue();
+
+        if (intValue &lt; (int) byteValue) {
+            throw new IncompatibleValuesException(
+                    intValue,
+                    byteValue,
+                    &quot;intValue must not be smaller than byteValue.&quot;);
+        }
+
+        return new Data(byteValue, intValue, this.stringValue());
+    }
+
+    // ..
+}
+
+// Usage
+Data data = new DataBuilder()
+    .withByteValue(123)       // allows method chaining
+    .withIntValue(456)
+    .withStringValue(&quot;abc&quot;)
+    .build();                 // enforces constraints
+                              // so any error is raised here
+</code></pre>
+<h2 id="bug-variants-addressed-2"><a class="header" href="#bug-variants-addressed-2">Bug Variants Addressed</a></h2>
+<ul>
+<li><strong>1:</strong> Raises an error<sup>1</sup> at the point of building.</li>
+<li><strong>2:</strong> Reduces provider code working with invalid input, because only valid input reaches the business logic.</li>
+<li><strong>4:</strong> Only allow groupings of valid values in the constructed type.</li>
+<li><strong>6:</strong> Constrains input to a range of safe values.</li>
+</ul>
+<p><sup>1</sup> It is not a bug to raise an error.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="option-type"><a class="header" href="#option-type">Option Type</a></h1>
+<blockquote>
+<p><code>null</code> in different clothes.</p>
+</blockquote>
+<p>Use <code>Optional&lt;T&gt;</code> to indicate when a value may not actually exist.</p>
+<details>
+<summary><b>Example:</b> Max value from a list of values.</summary>
+<p>Switch from:</p>
+<pre><code class="language-java">Integer max = null;
+for (int value: values) {
+    if (max == null) {
+        max = value;
+    } else if (max &lt; value) {
+        max = value;
+    }
+}
+return max;
+
+// Usage
+int max = getMax(new int[] {}); // NullPointerException
+</code></pre>
+<p>to:</p>
+<pre><code class="language-java">Optional&lt;Integer&gt; max = Optional.empty();
+for (int value: values) {
+    max = max
+        .map(currentMax -&gt; currentMax &lt; value ? value : currentMax)
+        .orElse(value);
+}
+
+return max;
+</code></pre>
+</details>
+<details>
+<summary><b>Example:</b> Returning data from storage.</summary>
+<p>Switch from:</p>
+<pre><code class="language-java">public interface DataStorage {
+    /**
+     * @return the data for the given ID, or null if it doesn't exist.
+     */
+    public Data get(DataId dataId);
+}
+
+public class DataConsumer {
+    public void doSomething(DataId dataId) {
+        Data data = dataStorage.get(dataId);
+        if (data != null) {
+            // do something with it.
+        }
+
+        // `data` exists here, possible to use null reference.
+    }
+}
+</code></pre>
+<p>to:</p>
+<pre><code class="language-java">public interface DataStorage {
+    /**
+     * @return the data for the given ID if exists.
+     */
+    public Optional&lt;Data&gt; get(DataId dataId);
+}
+
+public class DataConsumer {
+    public void doSomething(DataId dataId) {
+        dataStorage
+            .get(dataId)
+            .ifPresent(data -&gt; {
+                // do something with it.
+            });
+
+        // `data` doesn't exist here, impossible to use null reference.
+    }
+}
+</code></pre>
+<p>We communicate across the API boundary that the value may not exist.</p>
+</details>
+<h2 id="bug-variants-addressed-3"><a class="header" href="#bug-variants-addressed-3">Bug Variants Addressed</a></h2>
+<ul>
+<li><strong>1:</strong> Use <code>Optional</code> to indicate when it is valid to not provide a value.</li>
+<li><strong>3:</strong> Use <code>Optional</code> in return types to indicate there may not be a return value.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="either-type"><a class="header" href="#either-type">Either Type</a></h1>
+<blockquote>
+<p>Buy one get one free.</p>
+</blockquote>
+<p>Avoid writing two classes in one class, separate concepts by type.</p>
+<p>Switch from:</p>
+<pre><code class="language-java">public class InputOptions {
+    private InputDevice inputDevice;
+
+    // Using keyboard controls
+    // Only relevant if InputDevice is Keyboard
+    private KeyCode keyAttack;
+    private KeyCode keyJump;
+    private KeyCode keyUp;
+    private KeyCode keyDown;
+    private KeyCode keyLeft;
+    private KeyCode keyRight;
+
+    // Using Game Controller controls
+    // Only relevant if InputDevice is GameController
+    private ButtonCode buttonAttack;
+    private ButtonCode buttonJump;
+    private DirectionPad directionInput;
+
+    // ..
+}
+
+public enum InputDevice {
+    Keyboard,
+    GameController;
+}
+
+// Usage
+switch (inputOptions.getInputDevice()) {
+    case InputDevice.Keyboard:
+        if (inputOptions.getKeyAttack()) { /* .. */ }
+        break;
+    case InputDevice.GameController:
+        if (inputOptions.getButtonAttack()) { /* .. */ }
+        break;
+}
+</code></pre>
+<p>to:</p>
+<pre><code class="language-java">public class Keyboard {
+    private KeyCode keyAttack;
+    private KeyCode keyJump;
+    private KeyCode keyUp;
+    private KeyCode keyDown;
+    private KeyCode keyLeft;
+    private KeyCode keyRight;
+
+    // ..
+}
+
+public class GameController {
+    private ButtonCode buttonAttack;
+    private ButtonCode buttonJump;
+    private DirectionPad directionInput;
+
+    // ..
+}
+
+// Strong type alias.
+public class InputOptions extends Either&lt;Keyboard, GameController&gt; { /* .. */ }
+
+// Usage
+inputOptions
+    // Impossible to use game controller fields in keyboard logic
+    .ifKeyboard(keyboard -&gt; {
+        if (keyboard.getKeyAttack()) { /* .. */ }
+    })
+    // Impossible to use keyboard fields in game controller logic
+    .ifGameController(gameController -&gt; {
+        if (gameController.getButtonAttack()) { /* .. */ }
+    });
+</code></pre>
+<p>Doesn't exist in the JDK, but exists in [<code>functionaljava</code>]: [<code>fj.data.Either</code>] ([docs])</p>
+<h2 id="bug-variants-addressed-4"><a class="header" href="#bug-variants-addressed-4">Bug Variants Addressed</a></h2>
+<ul>
+<li><strong>1:</strong> Use <code>Either&lt;A, B&gt;</code> to allow passing in an <code>A</code> or a <code>B</code>.</li>
+<li><strong>3:</strong> Use <code>Either&lt;A, B&gt;</code> to return either an <code>A</code> or a <code>B</code>.</li>
+</ul>
+<p>[]: http://www.functionaljava.org/
+[]: https://github.com/functionaljava/functionaljava/blob/v5.0/core/src/main/java/fj/data/Either.java
+[docs]: http://www.functionaljava.org/javadoc/5.0/functionaljava/index.html</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="questions-and-comments"><a class="header" href="#questions-and-comments">Questions and Comments</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="thanks"><a class="header" href="#thanks">Thanks</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+    </body>
+</html>

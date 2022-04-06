@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Parse, Don&#x27;t Validate - Bug Reducing Patterns</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lets_play.html"><strong aria-hidden="true">2.</strong> Let's Play</a></li><li class="chapter-item expanded "><a href="../what_are_bugs.html"><strong aria-hidden="true">3.</strong> What Are Bugs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../what_are_bugs/consumer_input_incorrect.html"><strong aria-hidden="true">3.1.</strong> Consumer Input Incorrect</a></li><li class="chapter-item expanded "><a href="../what_are_bugs/provider_output_incorrect.html"><strong aria-hidden="true">3.2.</strong> Provider Output Incorrect</a></li><li class="chapter-item expanded "><a href="../what_are_bugs/semantic_ambiguity.html"><strong aria-hidden="true">3.3.</strong> Semantic Ambiguity</a></li><li class="chapter-item expanded "><a href="../what_are_bugs/detached_parameters_incorrect.html"><strong aria-hidden="true">3.4.</strong> Detached Parameters Incorrect</a></li><li class="chapter-item expanded "><a href="../what_are_bugs/undesired_side_effects.html"><strong aria-hidden="true">3.5.</strong> Undesired Side Effects</a></li><li class="chapter-item expanded "><a href="../what_are_bugs/input_restrictions_too_loose.html"><strong aria-hidden="true">3.6.</strong> Input Restrictions Too Loose</a></li></ol></li><li class="chapter-item expanded "><a href="../causes_of_bugs.html"><strong aria-hidden="true">4.</strong> Causes of Bugs</a></li><li class="chapter-item expanded "><a href="../patterns.html"><strong aria-hidden="true">5.</strong> Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../patterns/strong_types.html"><strong aria-hidden="true">5.1.</strong> Strong Types</a></li><li class="chapter-item expanded "><a href="../patterns/parse_dont_validate.html" class="active"><strong aria-hidden="true">5.2.</strong> Parse, Don't Validate</a></li><li class="chapter-item expanded "><a href="../patterns/builder.html"><strong aria-hidden="true">5.3.</strong> Builder</a></li><li class="chapter-item expanded "><a href="../patterns/option_type.html"><strong aria-hidden="true">5.4.</strong> Option Type</a></li><li class="chapter-item expanded "><a href="../patterns/either_type.html"><strong aria-hidden="true">5.5.</strong> Either Type</a></li></ol></li><li class="chapter-item expanded "><a href="../questions_and_comments.html"><strong aria-hidden="true">6.</strong> Questions and Comments</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../thanks.html">Thanks</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Bug Reducing Patterns</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="parse-dont-validate"><a class="header" href="#parse-dont-validate">Parse, Don't Validate</a></h1>
+<div><!-- Generated by graphviz version 2.43.0 (0)
+ --><!-- Title: %3 Pages: 1 --><svg width="203pt" height="42pt"
+ viewBox="0.00 0.00 202.88 41.94" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 37.94)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-37.94 198.88,-37.94 198.88,4 -4,4"/><!-- a --><g id="node1" class="node"><title>a</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="16.97" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="12.97" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">A</text></g><!-- b --><g id="node2" class="node"><title>b</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="177.91" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="173.91" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">B</text></g><!-- a&#45;&gt;b --><g id="edge1" class="edge"><title>a&#45;&gt;b</title><path fill="none" stroke="black" d="M34.09,-16.97C61.45,-16.97 117.27,-16.97 150.45,-16.97"/><polygon fill="black" stroke="black" points="150.75,-20.47 160.75,-16.97 150.75,-13.47 150.75,-20.47"/><text text-anchor="start" x="51.94" y="-19.97" font-family="Monospace" font-size="10.00">parser.parse(a)</text></g></g></svg></div>
+<p>Once you validate raw input, turn it into another type as proof that it is validated. The type safety stops the possibility of invalid values propagating far into the code.</p>
+<div><!-- Generated by graphviz version 2.43.0 (0)
+ --><!-- Title: %3 Pages: 1 --><svg width="244pt" height="318pt"
+ viewBox="0.00 0.00 244.00 318.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 314)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-314 240,-314 240,4 -4,4"/><g id="clust1" class="cluster"><title>cluster_string</title><path fill="none" stroke="black" stroke-dasharray="5,2" d="M20,-8C20,-8 216,-8 216,-8 222,-8 228,-14 228,-20 228,-20 228,-290 228,-290 228,-296 222,-302 216,-302 216,-302 20,-302 20,-302 14,-302 8,-296 8,-290 8,-290 8,-20 8,-20 8,-14 14,-8 20,-8"/><text text-anchor="start" x="97.5" y="-290.2" font-family="Monospace" font-weight="bold" font-size="11.00">String</text></g><g id="clust2" class="cluster"><title>cluster_password</title><path fill="none" stroke="black" stroke-dasharray="5,2" d="M28,-57C28,-57 208,-57 208,-57 214,-57 220,-63 220,-69 220,-69 220,-143 220,-143 220,-149 214,-155 208,-155 208,-155 28,-155 28,-155 22,-155 16,-149 16,-143 16,-143 16,-69 16,-69 16,-63 22,-57 28,-57"/><text text-anchor="start" x="90.5" y="-143.2" font-family="Monospace" font-weight="bold" font-size="11.00">Password</text></g><!-- string_0 --><g id="node1" class="node"><title>string_0</title><text text-anchor="start" x="110" y="-264.4" font-family="Monospace" font-size="12.00">&quot;&quot;</text></g><!-- string_1 --><g id="node2" class="node"><title>string_1</title><text text-anchor="start" x="95" y="-215.4" font-family="Monospace" font-size="12.00">&quot;weak&quot;</text></g><!-- string_0&#45;&gt;string_1 --><!-- string_2 --><g id="node3" class="node"><title>string_2</title><text text-anchor="start" x="20.5" y="-166.4" font-family="Monospace" font-size="12.00">&quot;エイズリエル　と　申します‼️&quot;</text></g><!-- string_1&#45;&gt;string_2 --><!-- password_3 --><g id="node5" class="node"><title>password_3</title><text text-anchor="start" x="24" y="-117.4" font-family="Monospace" font-size="12.00">&quot;?Q9|HgU8_asio;&lt;1z%%A@v^&quot;</text></g><!-- string_2&#45;&gt;password_3 --><!-- string_n --><g id="node4" class="node"><title>string_n</title><text text-anchor="start" x="110" y="-19.4" font-family="Monospace" font-size="12.00">..</text></g><!-- password_4 --><g id="node6" class="node"><title>password_4</title><text text-anchor="start" x="24" y="-68.4" font-family="Monospace" font-size="12.00">&quot;vat*#2%!&amp;ExN4F+C$KB&#45;da3&quot;</text></g><!-- password_3&#45;&gt;password_4 --><!-- password_4&#45;&gt;string_n --></g></svg></div>
+<p><strong>Parser:</strong></p>
+<ul>
+<li>
+<p>Function that transforms an input type to a target type, iff it matches certain criteria.</p>
+</li>
+<li>
+<p>The target type's constructor must be restricted to the parser.</p>
+<p>Ensures the target type can never be constructed without going through the parser.</p>
+</li>
+<li>
+<p>Raise an error if the criteria is not met.</p>
+</li>
+</ul>
+<!-- *When* a bug is discovered may actually be far from where it entered. -->
+<details>
+<summary><b>Example:</b> Updating a password only if the proposed value is strong.</summary>
+<p>Switch from:</p>
+<pre><code class="language-java">// Usage
+void resetPassword(final String passwordProposed) throws PasswordTooWeakException {
+    passwordChecker.check(passwordProposed);
+
+    // password is strong
+
+    passwordUpdater.update(profile, passwordProposed);
+}
+
+public class Password {
+    private String value;
+    public Password(String value) { /* .. */ }
+    // ..
+}
+
+// our &quot;validator&quot;
+public class PasswordChecker {
+    public void check(String passwordProposed) throws PasswordTooWeakException {
+        if (isStrong(passwordProposed)) {
+            // ok!
+            return;
+        } else {
+            throw new PasswordTooWeakException(passwordProposed);
+        }
+    }
+}
+
+// our provider
+public class PasswordUpdater {
+    public void update(Profile profile, String newPassword) { /* .. */ }
+}
+</code></pre>
+<p>to:</p>
+<pre><code class="language-java">// Usage
+void resetPassword(final String passwordProposed) throws PasswordTooWeakException {
+    Password password = passwordChecker.check(passwordProposed);
+
+    passwordUpdater.update(profile, password);
+}
+
+public class Password {
+    private String value;
+
+    // package private visibility
+    Password(String value) { /* .. */ }
+    // ..
+}
+
+// our &quot;parser&quot;
+public class PasswordChecker {
+    public Password check(String passwordProposed) throws PasswordTooWeakException {
+        if (isStrong(passwordProposed)) {
+            return new Password(passwordProposed);
+        } else {
+            throw new PasswordTooWeakException(passwordProposed);
+        }
+    }
+}
+
+// our provider
+public class PasswordUpdater {
+    public void update(Profile profile, Password newPassword) { /* .. */ }
+}
+</code></pre>
+</details>
+<details>
+<summary><b>Example:</b> Only accepting a list of one-or-more elements.</summary>
+<p>Switch from:</p>
+<pre><code class="language-java">void displaySuggestions(final List&lt;Suggestion&gt; suggestions) {
+    // ..
+}
+</code></pre>
+<p>to:</p>
+<pre><code class="language-java">void displaySuggestions(final ListMinOneElement&lt;Suggestion&gt; suggestions) {
+    // ..
+}
+
+public &lt;T&gt; class ListMinOneElement&lt;T&gt; {
+    private List&lt;T&gt; inner;
+
+    private ListMinOneElement(List&lt;T&gt; inner) {
+        this.inner = inner;
+    }
+
+    public static ListMinOneElement&lt;T&gt; tryFrom(List&lt;T&gt; maybeEmptyList)
+            throws ListEmptyException {
+        if (maybeEmptyList.isEmpty()) {
+            throw new ListEmptyException(maybeEmptyList);
+        } else {
+            return new ListMinOneElement(maybeEmptyList);
+        }
+    }
+}
+</code></pre>
+</details>
+<h2 id="bug-variants-addressed"><a class="header" href="#bug-variants-addressed">Bug Variants Addressed</a></h2>
+<ul>
+<li>
+<p><strong>1:</strong> Raises an error<sup>1</sup> at the point of parsing.</p>
+</li>
+<li>
+<p><strong>2:</strong> Reduces provider code working with invalid input, because only valid input reaches the business logic.</p>
+</li>
+<li>
+<p><strong>3:</strong> Well-named restrictive types informs the consumer of constraints the input must adhere to, and parsing enforces the constraints.</p>
+</li>
+<li>
+<p><strong>6:</strong> Constrains input to a range of safe values.</p>
+<p>If we have a list of safe commands that input is parsed into, then we protect ourselves from running unsafe logic.</p>
+</li>
+</ul>
+<p><sup>1</sup> It is not a bug to raise an error.</p>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li><a href="https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/">Parse, don’t validate</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../patterns/strong_types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../patterns/builder.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../patterns/strong_types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../patterns/builder.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
