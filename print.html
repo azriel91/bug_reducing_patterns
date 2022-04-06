@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lets_play.html"><strong aria-hidden="true">2.</strong> Let's Play</a></li><li class="chapter-item expanded "><a href="what_are_bugs.html"><strong aria-hidden="true">3.</strong> What Are Bugs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="what_are_bugs/consumer_input_incorrect.html"><strong aria-hidden="true">3.1.</strong> Consumer Input Incorrect</a></li><li class="chapter-item expanded "><a href="what_are_bugs/provider_output_incorrect.html"><strong aria-hidden="true">3.2.</strong> Provider Output Incorrect</a></li><li class="chapter-item expanded "><a href="what_are_bugs/semantic_ambiguity.html"><strong aria-hidden="true">3.3.</strong> Semantic Ambiguity</a></li><li class="chapter-item expanded "><a href="what_are_bugs/detached_parameters_incorrect.html"><strong aria-hidden="true">3.4.</strong> Detached Parameters Incorrect</a></li><li class="chapter-item expanded "><a href="what_are_bugs/undesired_side_effects.html"><strong aria-hidden="true">3.5.</strong> Undesired Side Effects</a></li><li class="chapter-item expanded "><a href="what_are_bugs/input_restrictions_too_loose.html"><strong aria-hidden="true">3.6.</strong> Input Restrictions Too Loose</a></li></ol></li><li class="chapter-item expanded "><a href="causes_of_bugs.html"><strong aria-hidden="true">4.</strong> Causes of Bugs</a></li><li class="chapter-item expanded "><a href="patterns.html"><strong aria-hidden="true">5.</strong> Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="patterns/strong_types.html"><strong aria-hidden="true">5.1.</strong> Strong Types</a></li><li class="chapter-item expanded "><a href="patterns/parse_dont_validate.html"><strong aria-hidden="true">5.2.</strong> Parse, Don't Validate</a></li><li class="chapter-item expanded "><a href="patterns/builder.html"><strong aria-hidden="true">5.3.</strong> Builder</a></li><li class="chapter-item expanded "><a href="patterns/option_type.html"><strong aria-hidden="true">5.4.</strong> Option Type</a></li><li class="chapter-item expanded "><a href="patterns/either_type.html"><strong aria-hidden="true">5.5.</strong> Either Type</a></li></ol></li><li class="chapter-item expanded "><a href="questions_and_comments.html"><strong aria-hidden="true">6.</strong> Questions and Comments</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="thanks.html">Thanks</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="what_are_bugs.html"><strong aria-hidden="true">2.</strong> What Are Bugs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="what_are_bugs/consumer_input_incorrect.html"><strong aria-hidden="true">2.1.</strong> Consumer Input Incorrect</a></li><li class="chapter-item expanded "><a href="what_are_bugs/provider_output_incorrect.html"><strong aria-hidden="true">2.2.</strong> Provider Output Incorrect</a></li><li class="chapter-item expanded "><a href="what_are_bugs/semantic_ambiguity.html"><strong aria-hidden="true">2.3.</strong> Semantic Ambiguity</a></li><li class="chapter-item expanded "><a href="what_are_bugs/detached_parameters_incorrect.html"><strong aria-hidden="true">2.4.</strong> Detached Parameters Incorrect</a></li><li class="chapter-item expanded "><a href="what_are_bugs/undesired_side_effects.html"><strong aria-hidden="true">2.5.</strong> Undesired Side Effects</a></li><li class="chapter-item expanded "><a href="what_are_bugs/input_restrictions_too_loose.html"><strong aria-hidden="true">2.6.</strong> Input Restrictions Too Loose</a></li></ol></li><li class="chapter-item expanded "><a href="causes_of_bugs.html"><strong aria-hidden="true">3.</strong> Causes of Bugs</a></li><li class="chapter-item expanded "><a href="patterns.html"><strong aria-hidden="true">4.</strong> Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="patterns/strong_types.html"><strong aria-hidden="true">4.1.</strong> Strong Types</a></li><li class="chapter-item expanded "><a href="patterns/parse_dont_validate.html"><strong aria-hidden="true">4.2.</strong> Parse, Don't Validate</a></li><li class="chapter-item expanded "><a href="patterns/builder.html"><strong aria-hidden="true">4.3.</strong> Builder</a></li><li class="chapter-item expanded "><a href="patterns/option_type.html"><strong aria-hidden="true">4.4.</strong> Option Type</a></li><li class="chapter-item expanded "><a href="patterns/either_type.html"><strong aria-hidden="true">4.5.</strong> Either Type</a></li></ol></li><li class="chapter-item expanded "><a href="questions_and_comments.html"><strong aria-hidden="true">5.</strong> Questions and Comments</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="thanks.html">Thanks</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -136,47 +136,15 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<div style="font-size: 300px;">🐞</div>
 <blockquote>
-<p><strong>Bug:</strong> The difference between what should be and what is.</p>
+<p><strong>Bug:</strong> A difference between what is happening and what is desired.</p>
 </blockquote>
-<p>This book describes different ways bugs happen in code, and patterns to reduce their occurrences.</p>
-<p>The patterns focus on reducing or removing the ability to write code that contains behaviour that one does not know exists.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="lets-play"><a class="header" href="#lets-play">Let's Play</a></h1>
-<h2 id="-where-is-the-bug"><a class="header" href="#-where-is-the-bug">🐞 Where is the bug?</a></h2>
-<ul>
-<li><strong>A</strong>, <strong>B</strong>, and <strong>C</strong> are different entities.</li>
-<li><strong>A</strong> produces invalid input.</li>
-<li><strong>B</strong> takes that invalid input, and passes it to <strong>C</strong>.</li>
-<li><strong>C</strong> doesn't like the input and drops it.</li>
-</ul>
-<div><!-- Generated by graphviz version 2.43.0 (0)
- --><!-- Title: %3 Pages: 1 --><svg width="182pt" height="42pt"
- viewBox="0.00 0.00 181.82 41.94" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 37.94)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-37.94 177.82,-37.94 177.82,4 -4,4"/><!-- a --><g id="node1" class="node"><title>a</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="16.97" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="12.97" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">A</text></g><!-- b --><g id="node2" class="node"><title>b</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="86.91" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="82.91" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">B</text></g><!-- a&#45;&gt;b --><g id="edge1" class="edge"><title>a&#45;&gt;b</title><path fill="none" stroke="black" d="M34.07,-16.97C41.77,-16.97 51.18,-16.97 59.86,-16.97"/><polygon fill="black" stroke="black" points="59.93,-20.47 69.93,-16.97 59.93,-13.47 59.93,-20.47"/></g><!-- c --><g id="node3" class="node"><title>c</title><ellipse fill="#eeeef5" stroke="#aaaabb" cx="156.85" cy="-16.97" rx="16.94" ry="16.94"/><text text-anchor="start" x="152.85" y="-14.87" font-family="Monospace" font-weight="bold" font-size="12.00">C</text></g><!-- b&#45;&gt;c --><g id="edge2" class="edge"><title>b&#45;&gt;c</title><path fill="none" stroke="black" d="M104.01,-16.97C111.71,-16.97 121.12,-16.97 129.81,-16.97"/><polygon fill="black" stroke="black" points="129.87,-20.47 139.87,-16.97 129.87,-13.47 129.87,-20.47"/></g></g></svg></div>
-<h2 id="perspectives"><a class="header" href="#perspectives">Perspectives</a></h2>
-<details>
-<summary>A</summary>
-<p>Correct – if <strong>A</strong> is software.</p>
-<p>But ☝️! if <strong>A</strong> means people, you are insulting the entire class of users.</p>
-</details>
-<details>
-<summary>B</summary>
-<p>Correct – if <strong>B</strong> should be a gatekeeper.</p>
-<p>But <strong>B</strong> could also just be a blind transport channel.</p>
-</details>
-<details>
-<summary>C</summary>
-<p>Correct – if <strong>C</strong> should communicate back that the value is invalid.</p>
-<p>But dropping invalid values could be completely okay.</p>
-</details>
-<details>
-<summary>There is no bug.</summary>
-<p>Correct – if unreliability is an acceptable design, like streaming a video.</p>
-</details>
+<p>This book illustrates 6 kinds of software bugs and patterns to reduce their occurrences.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="what-are-bugs"><a class="header" href="#what-are-bugs">What Are Bugs</a></h1>
 <blockquote>
-<p>&quot;Unexpected Behaviour&quot;</p>
+<p>Unexpected Behaviour</p>
 </blockquote>
-<p>Six kinds of bugs (not exhaustive – there's more!).</p>
 <ol>
 <li>Consumer Input Incorrect.</li>
 <li>Provider Output Incorrect.</li>
@@ -270,9 +238,10 @@
 </ul>
 </li>
 <li>
-<p>Expectations change.</p>
+<p>Changing expectations.</p>
 <ul>
 <li>What was desired previously is now undesired.</li>
+<li>Subset of code is changed to meet new expectation.</li>
 </ul>
 </li>
 </ol>
