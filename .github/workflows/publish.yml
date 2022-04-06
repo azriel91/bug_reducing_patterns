@@ -1,0 +1,42 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Publish
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup mdbook
+        uses: peaceiris/actions-mdbook@v1
+        with: { mdbook-version: 'latest' }
+
+      - name: Setup Graphviz
+        uses: ts-graphviz/setup-graphviz@v1
+
+      - name: mdbook-graphviz Cache
+        id: mdbook_graphviz_cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cargo/bin/mdbook-graphviz
+          key: ${{ runner.os }}-mdbook-graphviz
+
+      - uses: actions-rs/cargo@v1
+        if: steps.mdbook_graphviz_cache.outputs.cache-hit != 'true'
+        with:
+          command: install
+          args: mdbook-graphviz
+
+      - run: mdbook build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./book
