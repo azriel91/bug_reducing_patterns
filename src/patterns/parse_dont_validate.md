@@ -51,7 +51,7 @@ digraph {
     subgraph cluster_string {
         label = <<b>String</b>>
         style = "dashed, rounded"
-        node [shape = plain, style = plain]
+        node [shape = plain, style = ""]
         edge [style = invis]
 
         string_0 [label = <"">]
@@ -62,7 +62,7 @@ digraph {
         subgraph cluster_password {
             label = <<b>Password</b>>
             style = "dashed, rounded"
-            node [shape = plain, style = plain]
+            node [shape = plain, style = ""]
             edge [style = invis]
 
             password_3 [label = <"?Q9|HgU8_asio;&lt;1z%%A@v^">]
