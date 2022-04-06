@@ -2,13 +2,17 @@
 
 Largely designed for statically typed languages. These patterns are designed or intended to:
 
+* Communicate input and output expectations through API.
+
+    Documentation is important, code is authoritative.
+
 * Favour compile errors over testing through type safety.
 
     By making it impossible to compile incorrect code, quality is maintained with less tests.
 
-* Reduce mental effort to understand the concept the code is fulfilling.
+* Guarantee assumptions through type safety.
 
-    Make it easier to understand what the code is doing, to make it easier to spot bugs.
+    By encoding proofs of correctness through types, one no longer has to be defensive.
 
 
 ## Disclaimer

@@ -139,7 +139,9 @@ Data data = new DataBuilder()
 
 ## Bug Variants Addressed
 
-* **1:** Raises an error at the point of building.
+* **1:** Raises an error<sup>1</sup> at the point of building.
 * **2:** Reduces provider code working with invalid input, because only valid input reaches the business logic.
-* **4, 6:** Constrains input to a range of safe values.
-* **7:** Only allow groupings of valid values in the constructed type.
+* **4:** Only allow groupings of valid values in the constructed type.
+* **6:** Constrains input to a range of safe values.
+
+<sup>1</sup> It is not a bug to raise an error.

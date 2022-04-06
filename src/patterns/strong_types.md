@@ -42,5 +42,5 @@ public class Password {
 
 ## Bug Variants Addressed
 
-* **1, 3:** Avoids argument swap by producing a compiler error.
+* **1:** Avoids argument swap by producing a compiler error.
 * **5:** `Password.toString()` never returns the true value, so a wrapping class that calls `toString()` on all of its member fields will not inadvertently log the password.
