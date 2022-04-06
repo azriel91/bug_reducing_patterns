@@ -1,8 +1,6 @@
 # What Are Bugs
 
-> "Unexpected Behaviour"
-
-Six kinds of bugs (not exhaustive &ndash; there's more!).
+> Unexpected Behaviour
 
 1. Consumer Input Incorrect.
 2. Provider Output Incorrect.

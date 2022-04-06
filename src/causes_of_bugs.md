@@ -17,6 +17,7 @@
     - Difficulty in expressing concept as code.
     - Too many things to keep track of.
 
-4. Expectations change.
+4. Changing expectations.
 
     - What was desired previously is now undesired.
+    - Subset of code is changed to meet new expectation.

@@ -1,7 +1,7 @@
 # Introduction
 
-> **Bug:** The difference between what should be and what is.
+<div style="font-size: 300px;">🐞</div>
 
-This book describes different ways bugs happen in code, and patterns to reduce their occurrences.
+> **Bug:** A difference between what is happening and what is desired.
 
-The patterns focus on reducing or removing the ability to write code that contains behaviour that one does not know exists.
+This book illustrates 6 kinds of software bugs and patterns to reduce their occurrences.
