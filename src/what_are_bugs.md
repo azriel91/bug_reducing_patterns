@@ -2,7 +2,7 @@
 
 > "Unexpected Behaviour"
 
-Seven kinds / classifications of bugs.
+Six kinds of bugs (not exhaustive &ndash; there's more!).
 
 1. Consumer Input Incorrect.
 2. Provider Output Incorrect.
@@ -10,4 +10,3 @@ Seven kinds / classifications of bugs.
 4. Detached Parameters Incorrect.
 5. Undesired Side Effects.
 6. Input Restrictions Too Loose.
-7. Misaligned Expectations.

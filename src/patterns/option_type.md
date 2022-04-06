@@ -30,7 +30,7 @@ to:
 Optional<Integer> max = Optional.empty();
 for (int value: values) {
     max = max
-        .map(currentMax -> currentMax < value ? value : current)
+        .map(currentMax -> currentMax < value ? value : currentMax)
         .orElse(value);
 }
 

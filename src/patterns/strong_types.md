@@ -1,6 +1,6 @@
 # Strong Types
 
-> *in constrast to Stringly typed*
+> *In constrast to Stringly typed*
 
 Instead of `String username, String password`, use `Username username, Password password`.
 

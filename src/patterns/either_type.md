@@ -7,7 +7,6 @@ Avoid writing two classes in one class, separate concepts by type.
 Switch from:
 
 ```java
-// Example of two classes in one
 public class InputOptions {
     private InputDevice inputDevice;
 

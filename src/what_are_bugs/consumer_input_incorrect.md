@@ -1,6 +1,8 @@
 # Consumer Input Incorrect
 
+![](./consumer_input_incorrect.png)
+
 Input value doesn't comply with allowed specification.
 
-* Syntax incorrect.
-* Type is able to hold values outside the range of valid business values, so consumer may assume whatever fits is okay.
+* Input format incorrect.
+* Able to enter "anything", so consumer assumes whatever fits is okay.

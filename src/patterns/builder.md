@@ -19,23 +19,26 @@ digraph {
         fontsize  = 10
     ]
 
-    rankdir = LR;
-
     a [label = <<b>A</b>>]
     b [label = <<b>B</b>>]
     c [label = <<b>C</b>>]
     d [label = <<b>D</b>>]
 
-    builder [label = "Builder"]
+    builder [label = "Builder", shape = rectangle, style = "rounded, filled"]
 
-    a -> builder [label = <builder.with_a(a)>]
-    b -> builder [label = <builder.with_b(b)>]
-    c -> builder [label = <builder.with_c(c)>]
-    builder -> d [label = <builder.build()>]
+    a -> builder [label = " builder.with_a(a)     "]
+    b -> builder [label = " builder.with_b(b)     "]
+    c -> builder [label = " builder.with_c(c)     "]
+    builder -> d [label = " builder.build()"]
 }
 ```
 
-Mapping multiple values into a single validated value.
+**Builder:**
+
+* Collects multiple values, then maps them into a single validated value in a `build()` method.
+* Avoids partial objects &ndash; don't allow yourself to have an instance of the target type unless it is correct.
+
+**Example:** Data where `intValue` must be greater than `byteValue`.
 
 Switch from:
 
@@ -54,8 +57,8 @@ public class Data {
     // ..
 }
 
-// Consumer
-Data data = new Data("abc", 1, Optional.empty());
+// Usage
+Data data = new Data(0, 1, Optional.empty());
 ```
 
 to:
@@ -100,8 +103,8 @@ public class DataBuilder {
 
     // Append additional values.
 
-    public DataBuilder withStringValue(String stringValue) {
-        this.stringValue = Optional.of(stringValue);
+    public DataBuilder withByteValue(byte byteValue) {
+        this.byteValue = Optional.of(byteValue);
         return this;
     }
 
@@ -116,11 +119,20 @@ public class DataBuilder {
     }
 
     public Data build() throws IncompatibleValuesException {
-        byte byteValue = this.byteValue.get().byteValue();
-        int intValue = this.intValue.get().intValue();
+        // Default the byteValue and intValue
+        byte byteValue = this.byteValue
+                .orElse(0)
+                .byteValue();
+
+        int intValue = this.intValue
+                .orElse((int) byteValue + 1)
+                .intValue();
 
         if (intValue < (int) byteValue) {
-            throw new IncompatibleValuesException(intValue, byteValue, "intValue must not be smaller than byteValue.");
+            throw new IncompatibleValuesException(
+                    intValue,
+                    byteValue,
+                    "intValue must not be smaller than byteValue.");
         }
 
         return new Data(byteValue, intValue, this.stringValue());
@@ -129,12 +141,13 @@ public class DataBuilder {
     // ..
 }
 
-// Consumer
+// Usage
 Data data = new DataBuilder()
-    .withByteValue(1)
-    .withIntValue(1)
+    .withByteValue(123)       // allows method chaining
+    .withIntValue(456)
     .withStringValue("abc")
-    .build(); // enforces constraints, may throw exception
+    .build();                 // enforces constraints
+                              // so any error is raised here
 ```
 
 ## Bug Variants Addressed
