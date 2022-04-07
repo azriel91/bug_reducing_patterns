@@ -12,7 +12,7 @@
     - Behaviour changes on upgrades.
     - Operating with invalid values.
 
-3. Coding mistakes.
+3. Mental overload.
 
     - Difficulty in expressing concept as code.
     - Too many things to keep track of.
