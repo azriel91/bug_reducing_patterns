@@ -106,12 +106,6 @@ void resetPassword(final String passwordProposed) throws PasswordTooWeakExceptio
     passwordUpdater.update(profile, passwordProposed);
 }
 
-public class Password {
-    private String value;
-    public Password(String value) { /* .. */ }
-    // ..
-}
-
 // our "validator"
 public class PasswordChecker {
     public void check(String passwordProposed) throws PasswordTooWeakException {
