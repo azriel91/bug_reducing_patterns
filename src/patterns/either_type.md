@@ -81,13 +81,9 @@ inputOptions
     });
 ```
 
-Doesn't exist in the JDK, but exists in [`functionaljava`]: [`fj.data.Either`] \([docs]\)
+Doesn't exist in the JDK, but exists in [`functionaljava`](http://www.functionaljava.org/): [`fj.data.Either`](https://github.com/functionaljava/functionaljava/blob/v5.0/core/src/main/java/fj/data/Either.java) \([docs](http://www.functionaljava.org/javadoc/5.0/functionaljava/index.html)\)
 
 ## Bug Variants Addressed
 
 * **1:** Use `Either<A, B>` to allow passing in an `A` or a `B`.
 * **3:** Use `Either<A, B>` to return either an `A` or a `B`.
-
-[`functionaljava`]: http://www.functionaljava.org/
-[`fj.data.Either`]: https://github.com/functionaljava/functionaljava/blob/v5.0/core/src/main/java/fj/data/Either.java
-[docs]: http://www.functionaljava.org/javadoc/5.0/functionaljava/index.html
