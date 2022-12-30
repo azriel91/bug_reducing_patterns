@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
       - name: Setup mdbook
         uses: peaceiris/actions-mdbook@v1
@@ -25,12 +25,13 @@ jobs:
 
       - name: mdbook-graphviz Cache
         id: mdbook_graphviz_cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cargo/bin/mdbook-graphviz
           key: ${{ runner.os }}-mdbook-graphviz
 
-      - uses: actions-rs/cargo@v1
+      - # FIXME: Switch back when actions-rs/cargo#217 gets merged
+        uses: r3-os/actions-rust-cargo@fb222fe18dc90e381546d012f9e3d6f353f0f627
         if: steps.mdbook_graphviz_cache.outputs.cache-hit != 'true'
         with:
           command: install
